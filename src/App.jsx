@@ -18,12 +18,13 @@ function deriveActivePlayer(gameTurns){
     return currentPlayer;
 }
 
+
 export default function App() {
   //const [activePlayer,setActivePlayer]=useState('X');
   const [gameTurns,setGameTurns]=useState([]);
   const activePlayer=deriveActivePlayer(gameTurns);
 
-  let gameBoard=initialGameBoard;
+  let gameBoard=[...initialGameBoard.map(array=>[...array])];
 
 for (const turn of gameTurns){
     const {square,player}=turn;
@@ -55,6 +56,10 @@ function handleSelectSquare(rowIndex,colIndex){
   });
 }
 
+function restart(){
+  setGameTurns([]);
+}
+
   return <main>
     <div id="game-container">
       <ol id="players" className="highlight-player">
@@ -67,7 +72,7 @@ function handleSelectSquare(rowIndex,colIndex){
        symbol="O" 
        isActive={activePlayer==='O'}/>
       </ol>
-      {(winner || hasDraw) && <GameOver winner={winner}/>}
+      {(winner || hasDraw) && <GameOver winner={winner} onRestart={restart}/>}
       <GameBoard 
       onSelectSquare={handleSelectSquare}
       board={gameBoard} 
